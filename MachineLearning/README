@@ -1,0 +1,3 @@
+This is a collection of Python scripts that will run different machine learning processes.
+The names of the scripts will denote what kind of machine learning tool is being used.
+There are no dependencies, but be sure to have the data files also downloaded in order to make the scripts run properly.
