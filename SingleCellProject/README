@@ -1,0 +1,33 @@
+Project for Programming I class
+
+README for BINF 6111 - 8111 Programming I
+
+This document explains the files in here.
+
+USE THESE FILES
+
+User_interface.py
+
+frame_gif_gen.py
+
+binarizedbinner.py
+
+INPUT FILES
+
+geometry.txt is the coordinates for 3039 cells on one hemisphere of the early Drosophila embryo.
+
+binarized_bdtnp.csv is the binarization data for all 84 genes at all 3039 cell positions.
+
+THIS CODE WORKS AND IS MOSTLY BUG FREE
+
+bin_graph.py is the code to generate the plot of the geometry.txt file.
+
+frame_gif_gen.py is the code to generate multiple png images to be combined in a gif.
+
+binarizedbinner.py is the code that tells which genes are on at which position from the binarized_bdtnp.csv file.
+
+THIS CODE IS WORKS IN PROGRESS
+
+frame_gif_gen_with_dir.py is the code to make the images and specify a new directory.
+
+plots_graph.py is the code to generate the plot of the geometry.txt file AND the desired gene location coordinates to be graphed on the same axes.
