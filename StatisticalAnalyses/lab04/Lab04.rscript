@@ -1,0 +1,72 @@
+data<-c(2,3,2,6,3,5,6,2,6,6,2,6,6,2,3,6,6,6,5,6,6,5,6,6,6,6,6,4,6,3,3,3,6,6,5,6,6)
+
+#loaded die, fair die #
+dieprobs <- c(0.01,0.99)
+diefaceprobs <- list(c(0.1,1/6),c(0.1,1/6),c(0.1,1/6),c(0.1,1/6),c(0.1,1/6),c(0.5,1/6))
+
+
+### Question 1 ###
+posteriorVals <- c(length = length(data))
+for (i in 1:length(data)){
+    roll <- data[i]
+    denom <- dieprobs[1] * diefaceprobs[[roll]][1] + dieprobs[2] * diefaceprobs[[roll]][2]
+    dieprobs[1] <- dieprobs[1] * diefaceprobs[[roll]][1]/denom
+    dieprobs[2] <- dieprobs[2] * diefaceprobs[[roll]][2]/denom
+    posteriorVals[i] <- dieprobs[1]
+}
+
+rollnums <- seq(1,length(data))
+plot(rollnums,posteriorVals,main='Question 1: Die Roll vs. Posterior of Loaded Die')
+
+
+### Question 2 ###
+
+loadeddieprobs <- c(0.1,.1,.1,.1,.1,.5)
+
+rolldie <- function(num_rolls,probs) {
+	rolls <- sample(seq(1,6),num_rolls,replace=TRUE,prob=probs)
+	return(rolls)
+}
+
+numtests <- 1:100
+simspertest <- 5000
+
+avgposteriorvalue <- c(length=length(numtests))
+estimatedpower <- c(length=length(numtests))
+for (i in numtests) {
+    posteriorVals <- c(length = simspertest)
+    for (j in 1:simspertest){
+            dieprobs <- c(0.01,0.99)
+            rolls <- rolldie(numtests[i],loadeddieprobs)
+            for(k in 1:length(rolls)){
+                denom <- dieprobs[1] * diefaceprobs[[rolls[k]]][1] + dieprobs[2] * diefaceprobs[[rolls[k]]][2]
+                dieprobs[1] <- dieprobs[1] * diefaceprobs[[rolls[k]]][1]/denom
+                dieprobs[2] <- dieprobs[2] * diefaceprobs[[rolls[k]]][2]/denom
+            }
+        posteriorVals[j] <- dieprobs[1]
+    }
+    avgposteriorvalue[i] <- mean(posteriorVals)
+    estimatedpower[i] <- sum(posteriorVals >= 1-0.0001) / simspertest
+}
+
+plot(numtests,estimatedpower,main='Question 2: Estimated Power vs. Number of Rolls')
+abline(h=0.95,col='red')
+plot(numtests,avgposteriorvalue,main='Question 2: Average Posterior Probability vs. Number of Rolls')
+abline(h=0.95,col='red')
+
+### Question 3A ###
+x_vals <- seq(0,1,0.001)
+plot(x_vals,dbeta(x_vals,6,6),col='blue',main='Question 3A: Prior probability distributions')
+points(x_vals,dbeta(x_vals,1,1),col='red')
+
+# B #
+par(cex.main = 0.9)
+plot(x_vals,dbeta(x_vals,7,7),col='blue')
+title('Question 3B: Prior probability distributions vs. Posterior probability distributions \n(10 -> 12 Flips)')
+points(x_vals,dbeta(x_vals,6,6),col='red')
+plot(x_vals,dbeta(x_vals,406,406),col='blue',main='Question 3B: Prior probability distributions vs. Posterior probability distributions \n(10 -> 800 Flips)')
+points(x_vals,dbeta(x_vals,6,6),col='red')
+plot(x_vals,dbeta(x_vals,2,2),col='blue',main='Question 3B: Prior probability distributions vs. Posterior probability distributions \n(2 -> 4 Flips)')
+points(x_vals,dbeta(x_vals,1,1),col='red')
+plot(x_vals,dbeta(x_vals,401,401),col='blue',main='Question 3B: Prior probability distributions vs. Posterior probability distributions \n(2 -> 802 Flips)')
+points(x_vals,dbeta(x_vals,1,1),col='red')
